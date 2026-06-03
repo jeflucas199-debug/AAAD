@@ -50,12 +50,6 @@ export default function Store() {
                   <h3 className="font-inter font-semibold text-white text-sm leading-tight mb-3 group-hover:text-gold-500 transition-colors">
                     {product.name}
                   </h3>
-                  <div className="flex items-center justify-between">
-                    <span className="font-bebas text-xl text-gold-500">{product.price}</span>
-                    <span className="btn-secondary text-xs py-1.5 px-4">
-                      Comprar
-                    </span>
-                  </div>
                 </div>
               </motion.a>
             </ScrollReveal>

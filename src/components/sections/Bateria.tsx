@@ -21,15 +21,15 @@ export default function Bateria() {
           <ScrollReveal direction="left">
             <div className="relative flex justify-center">
               <motion.div
-                animate={{ scale: [1, 1.06, 1] }}
+                animate={{ scale: [1, 1.08, 1] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute inset-0 rounded-full bg-red-800/30 blur-3xl"
+                className="absolute inset-0 rounded-full bg-red-700/35 blur-3xl"
               />
               <img
                 src="/logo-bateria.png"
                 alt="Alçapão Alcoólico"
-                className="w-72 h-72 md:w-96 md:h-96 object-contain relative z-10 flex-shrink-0"
-                style={{ filter: 'drop-shadow(0 0 50px rgba(180,30,30,0.55))' }}
+                className="w-64 h-64 md:w-80 md:h-80 object-contain relative z-10 flex-shrink-0"
+                style={{ filter: 'drop-shadow(0 0 65px rgba(200,30,30,0.65)) drop-shadow(0 0 110px rgba(180,20,20,0.30))' }}
               />
             </div>
           </ScrollReveal>

@@ -26,7 +26,7 @@ export default function Cheerleading() {
               />
               <div
                 className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden relative z-10 flex-shrink-0"
-                style={{ boxShadow: '0 0 70px rgba(200,30,30,0.65), 0 0 120px rgba(180,20,20,0.3)' }}
+                style={{ boxShadow: '0 0 65px rgba(200,30,30,0.65), 0 0 110px rgba(180,20,20,0.30)' }}
               >
                 <img
                   src="/logo-cheerleading.png"

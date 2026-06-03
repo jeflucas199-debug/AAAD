@@ -8,18 +8,26 @@ const THUMB_QUALITIES = ['maxresdefault', 'sddefault', 'hqdefault']
 
 function YouTubeThumbnail({ id, title }: { id: string; title: string }) {
   const [qualityIdx, setQualityIdx] = useState(0)
-  const src = `https://img.youtube.com/vi/${id}/${THUMB_QUALITIES[qualityIdx]}.jpg`
+  const [failed, setFailed] = useState(false)
 
   const handleError = () => {
-    if (qualityIdx < THUMB_QUALITIES.length - 1) setQualityIdx(q => q + 1)
+    if (qualityIdx < THUMB_QUALITIES.length - 1) {
+      setQualityIdx(q => q + 1)
+    } else {
+      setFailed(true)
+    }
   }
+
+  const src = failed
+    ? '/playlist/thumb-fallback.jpg'
+    : `https://img.youtube.com/vi/${id}/${THUMB_QUALITIES[qualityIdx]}.jpg`
 
   return (
     <img
       src={src}
       alt={title}
-      onError={handleError}
-      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      onError={failed ? undefined : handleError}
+      className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
       draggable={false}
     />
   )
@@ -27,34 +35,46 @@ function YouTubeThumbnail({ id, title }: { id: string; title: string }) {
 
 const MEGAFUNKS = [
   {
+    id: 'cAciP-yM9EI',
+    title: 'MEGA TOURO LOKO 2K26',
+    tag: '2026',
+    featured: true,
+    localThumb: null,
+  },
+  {
     id: 'BJAfdfZAoJU',
     title: 'MEGA DIREITO PUC — JJPR 2K25',
     tag: '2025',
-    featured: true,
+    featured: false,
+    localThumb: null,
   },
   {
     id: 'y918kGRCqUs',
     title: 'MEGAFUNK 30 ANOS — DIREITO PUCPR',
     tag: '2024',
     featured: false,
+    localThumb: null,
   },
   {
     id: 'ayW-a7A0JSU',
     title: 'MEGAFUNK: A Atlética tá Gigante',
     tag: '2023',
     featured: false,
+    localThumb: '/playlist/thumb-fallback.jpg',
   },
   {
     id: 'x17_xIrX3eo',
     title: 'MEGAFUNK: Fuja Borracho',
     tag: '2023',
     featured: false,
+    localThumb: '/playlist/thumb-fallback.jpg',
   },
   {
     id: 'Og8Whnb4j4o',
     title: 'MEGA AAAD — Verão 2022',
     tag: '2022',
     featured: false,
+    localThumb: '/playlist/thumb-fallback.jpg',
   },
 ]
 
@@ -77,8 +97,17 @@ function VideoCard({ video, delay, large = false }: { video: typeof MEGAFUNKS[0]
             : '0 4px 24px rgba(0,0,0,0.5)',
         }}
       >
-        {/* Thumbnail with quality fallback */}
-        <YouTubeThumbnail id={video.id} title={video.title} />
+        {/* Thumbnail */}
+        {video.localThumb ? (
+          <img
+            src={video.localThumb}
+            alt={video.title}
+            className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+            draggable={false}
+          />
+        ) : (
+          <YouTubeThumbnail id={video.id} title={video.title} />
+        )}
 
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40 group-hover:via-black/15 transition-all duration-500" />
@@ -137,7 +166,7 @@ function VideoCard({ video, delay, large = false }: { video: typeof MEGAFUNKS[0]
 }
 
 export default function Playlist() {
-  const [featured, ...rest] = MEGAFUNKS
+  const [featured, v1, v2, ...bottom] = MEGAFUNKS
 
   return (
     <section id="playlist" className="section-padding bg-dark-500 relative overflow-hidden">
@@ -149,13 +178,22 @@ export default function Playlist() {
           subtitle="As músicas oficiais do Touro Loko. Cada funk marca uma época e uma conquista da nossa atlética."
         />
 
-        {/* Featured + grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-          <VideoCard video={featured} delay={0.05} large />
+        <div className="space-y-4 mb-4">
+          {/* Linha 1: featured grande + 2 empilhados */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2">
+              <VideoCard video={featured} delay={0.05} large />
+            </div>
+            <div className="grid grid-rows-2 gap-4">
+              <VideoCard video={v1} delay={0.1} />
+              <VideoCard video={v2} delay={0.15} />
+            </div>
+          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {rest.map((video, i) => (
-              <VideoCard key={video.id} video={video} delay={0.1 + i * 0.07} />
+          {/* Linha 2: 3 colunas iguais */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {bottom.map((video, i) => (
+              <VideoCard key={video.id} video={video} delay={0.2 + i * 0.07} />
             ))}
           </div>
         </div>
